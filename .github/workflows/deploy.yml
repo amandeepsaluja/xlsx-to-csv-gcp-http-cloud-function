@@ -1,30 +1,30 @@
-name: Deploy Excel to CSV Cloud Function
+# name: Deploy Excel to CSV Cloud Function
 
-on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - "**.md"
+# on:
+#   push:
+#     branches:
+#       - master
+#     paths-ignore:
+#       - "**.md"
 
-env:
-  TERRAFORM_DIRECTORY: infra
-  SOURCE_CODE_DIRECTORY: src
+# env:
+#   TERRAFORM_DIRECTORY: infra
+#   SOURCE_CODE_DIRECTORY: src
 
-jobs:
-  check-python-code:
-    name: Check Code Errors
-    runs-on: ubuntu-latest
+# jobs:
+#   check-python-code:
+#     name: Check Code Errors
+#     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
+#     permissions:
+#       contents: read
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Python Linter
-        uses: sunnysid3up/python-linter@master
-        with:
-          source: ${{ env.SOURCE_CODE_DIRECTORY }}
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Python Linter
+#         uses: sunnysid3up/python-linter@master
+#         with:
+#           source: ${{ env.SOURCE_CODE_DIRECTORY }}
 #   deploy-cloud-function:
 #     name: Deploy Excel to CSV Cloud Function
 #     runs-on: ubuntu-latest
