@@ -61,4 +61,6 @@ variable "bucket_name" {
 
 
 variable "service_account_email" {
+  description = "Service account email to be used by cloud function to access other GCP resources passed via Github secrets"
+  type        = string
 }
