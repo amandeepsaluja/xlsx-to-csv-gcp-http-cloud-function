@@ -9,6 +9,8 @@ from io import BytesIO
 
 @functions_framework.http
 def convert_excel_to_csv(request):
+    print("Starting Excel to CSV conversion...")
+
     # Get parameters from the request
     request_json = request.get_json()
 
@@ -30,6 +32,8 @@ def convert_excel_to_csv(request):
     else:
         return "Invalid request. Required parameters are missing.", 400
 
+    print(request_json)
+
     # Initialize the Google Cloud Storage client
     storage_client = storage.Client()
 
@@ -37,6 +41,8 @@ def convert_excel_to_csv(request):
     bucket = storage_client.bucket(source_excel_bucket)
     blob = bucket.blob(source_excel_file)
     blob_result = blob.download_as_bytes()
+
+    print("Downloaded Excel file from GCS.")
 
     # Convert the Excel file to CSV
     df = pd.read_excel(BytesIO(blob_result), sheet_name=source_sheet_name)
