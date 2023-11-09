@@ -3,7 +3,7 @@ import functions_framework
 import pandas as pd
 
 from google.cloud import storage
-from helpers import clean_column_name
+from helpers import clean_column_name, find_table
 from io import BytesIO
 
 
@@ -46,18 +46,19 @@ def convert_excel_to_csv(request):
 
     # Convert the Excel file to CSV
     df = pd.read_excel(BytesIO(blob_result), sheet_name=source_sheet_name)
+    new_df = find_table(df)
 
     # updating column names and converting to a dictionary
-    df.columns = [clean_column_name(col) for col in df.columns]
+    new_df.columns = [clean_column_name(col) for col in new_df.columns]
 
     # Add metadata columns
-    df["job_source"] = job_source
-    df["input_excel"] = f"gs://{source_excel_bucket}/{source_excel_file}"
-    df["output_csv"] = f"gs://{target_csv_bucket}/{target_csv_file}"
-    df["job_time"] = job_time
+    new_df["job_source"] = job_source
+    new_df["input_excel"] = f"gs://{source_excel_bucket}/{source_excel_file}"
+    new_df["output_csv"] = f"gs://{target_csv_bucket}/{target_csv_file}"
+    new_df["job_time"] = job_time
 
     # Convert the DataFrame to a CSV string
-    csv_data = df.to_csv(index=False)
+    csv_data = new_df.to_csv(index=False)
 
     # Upload the CSV to GCS
     bucket = storage_client.bucket(target_csv_bucket)
